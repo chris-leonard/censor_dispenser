@@ -31,20 +31,15 @@ def find_from_list(str, subs, start = 0):
     Return the lowest index in str where a substring from subs is found within the slice [start:].
     Returns -1 if no substring is found.
     '''
-    # Set to value greater than everything
-    sub_index = inf
     # Cycle through substrings, find lowest index where one appears
+    sub_index = inf
     for sub in subs:
         try:
             sub_index = min(sub_index, str.index(sub, start))
         except ValueError:
             pass
     
-    # Return -1 if no sub found
-    if sub_index == inf:
-        return -1
-    else:
-        return sub_index
+    return -1 if sub_index == inf else sub_index
 
 def censor_words(text, words, negative_words = None, neg_threshold = 0):
     '''
@@ -67,7 +62,6 @@ def censor_words(text, words, negative_words = None, neg_threshold = 0):
     for i in range(neg_threshold):
         neg_index = find_from_list(comparison_text, negative_words, start = neg_index+1) 
         if neg_index == -1: return censored_text
-    print(neg_index)
     
     # Censor negative words past neg_index
     return censored_text[:neg_index + 1] + censor_words(censored_text[neg_index + 1:], negative_words)
@@ -92,13 +86,13 @@ def main():
     # Censor the proprietary terms in email two
     proprietary_terms = ["she", "personality matrix", "sense of self", "self-preservation", "learning algorithm", "her", "herself"]
     email_two_censored = censor_words(email_two, proprietary_terms)
-    #print('Email two censored: ' + email_two_censored)
+    print('Email two censored: ' + email_two_censored)
 
     # Censor negative words after they have occurred twice
     negative_words = ["concerned", "behind", "danger", "dangerous", "alarming", "alarmed", "out of control", "help", "unhappy", "bad", "upset", "awful", "broken", "damage", "damaging", "dismal", "distressed", "distressed", "concerning", "horrible", "horribly", "questionable"]
     email_three_censored = censor_words(email_three, proprietary_terms, negative_words = negative_words, neg_threshold = 2)
     #print('Email three uncensored: ' + email_three)
-    #print('Email three censored: ' + email_three_censored)
+    print('Email three censored: ' + email_three_censored)
 
     # Tests:
     uncensored_text = 'aaa'
